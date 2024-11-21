@@ -194,7 +194,7 @@ const Navbar = () => {
                   className="flex items-center space-x-2 focus:outline-none "
                 >
                   <img
-                    src={user.profileImg} // Replace with user's profile picture URL
+                    src={user.profileimg} // Replace with user's profile picture URL
                     alt="User"
                     className="w-20 h-20 rounded-full border border-gray-300"
                   />
