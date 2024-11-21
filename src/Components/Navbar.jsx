@@ -1,5 +1,5 @@
 import React, { useState,useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../Context/UserContext';
 import logo from '../assets/logo.jpg'
 import { FaSearch } from "react-icons/fa";
@@ -8,14 +8,39 @@ import toast from "react-hot-toast";
 
 
 
+
 const Navbar = () => {
 
 
-  // const {  } = useContext(UserContext);
+   const { searchQuery,setSearchQuery } = useContext(UserContext);
+   const [isNavOpen, setIsNavOpen] = useState(false);
+   const [isOpen, setIsOpen] = useState(false);
+   const [dropdownOpen, setDropdownOpen] = useState(false);
+   ;
+ 
 
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
 
+   
+   const { user,searchTerm,setSearchTerm } = useContext(UserContext)
+
+
+
+
+   //Search 
+   const navigate = useNavigate();
+
+   const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate('/search');
+    }
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(); // Trigger search when "Enter" key is pressed
+    }
+  };
+
+ 
 
 
 
@@ -51,43 +76,21 @@ const Navbar = () => {
    
 
 
-  const handleSearch = () => {
-    console.log('hi');
-    
-    const filteredResults = data.filter(item =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setResults(filteredResults);
-    console.log(setResults);
 
-  };
  
-  
-    const [isOpen, setIsOpen] = useState(false);
-  
-    // Toggle dropdown visibility
-    const toggleDropdown = () => {
-      setIsOpen(!isOpen);
-    };
+// Toggle dropdown visibility
+   
       // Toggle navbar function
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
   };
 
-   const{data:authUser}=useQuery({
-    queryKey:["authUser"]})
 
-     console.log(authUser);
+   
     
-   
-  
 
-   
-
-
-
-
-
+    console.log(user);
+    
 
     return (
       <div>
@@ -144,7 +147,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/about"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-orange-400 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={() => toggleClose()}
                   >
                     About
@@ -159,94 +162,86 @@ const Navbar = () => {
                     Create
                   </Link>
                 </li>
-                
-
               </ul>
             </div>
+
             {/* //search */}
-            <div className=" relative" onClick={() => cardOpenNavbar()}>
+            <div className=" relative">
               <div>
                 <h5 className="flex items-center space-x-2 relative right-0">
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mt-5"
-                  />
-                  <p
-                    onClick={handleSearch}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer bottom-8"
+                <input
+        type="text"
+        placeholder="Search recipes..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={handleKeyDown} // Listen for "Enter" key
+        className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+      />
+                    <button
+                    onClick={handleKeyDown}
+                    className="absolute top-3 right-4  transform -translate-y-1/2 text-gray-500 cursor-pointer bottom-8"
                   >
                     <FaSearch />
-                  </p>
+                  </button>
                 </h5>
               </div>
-              
-              
             </div>
-            <div className="relative mt-8 ">
 
+            {user ? (
+              <div className="relative mt-5 ">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="flex items-center space-x-2 focus:outline-none "
+                >
+                  <img
+                    src={user.profileImg} // Replace with user's profile picture URL
+                    alt="User"
+                    className="w-20 h-20 rounded-full border border-gray-300"
+                  />
+                  <span className="hidden md:block">{user.username}</span>
+                </button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg z-10">
+                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 ">
+                      <Link to="/profile">Profile</Link>
+                    </button>
 
-      {/* Profile Icon */}
-      {
-        authUser ? (
-          <div>
-              <div
-        className="bg-slate-400 rounded-full h-15 w-10 cursor-pointer flex justify-center items-center"
-        onClick={toggleDropdown}
-      >
-        <img
-          src={authUser?.profileImg || "/avatar-placeholder.png"}
-          alt="Profile"
-          className="rounded-full h-10 w-10"
-        />
-        
-      </div>
-
-      {/* Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg">
-          <ul className="py-2">
-            <li>
-              <Link
-                to="/profile"
-                className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              >
-                Profile
-              </Link>
-            </li>
-            <li
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => console.log('Settings clicked')}
-            >
-              Settings
-            </li>
-            <li
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={(e) =>{logout()} }
-            >
-              Logout
-            </li>
-          </ul>
-        </div>
-      )}
-
-          </div>
-    
-        ):(
-          <h1>logout</h1>
-        )
-        
-      }
-    
-      
-    </div>
-            
-
-
-
-            
+                    <button
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                      onClick={() => logout()} // Replace with logout logic
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="relative mt-5 pl-5">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="flex items-center space-x-2 focus:outline-none"
+                >
+                  <img
+                    src="https://via.placeholder.com/40" // Replace with user's profile picture URL
+                    alt="User"
+                    className="w-30 h-50 rounded-full border border-gray-300"
+                  />
+                  <span className="hidden md:block"></span>
+                </button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg z-10">
+                    <Link to="/login">
+                      <a
+                        href="/login"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                      >
+                        Login
+                      </a>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </nav>
       </div>

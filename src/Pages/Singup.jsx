@@ -48,12 +48,15 @@ const Singup = () => {
         
       }
     },
+
+
     onSuccess :()=>{
       toast.success('Successfully toasted!')
        //toast.success("Account created successfully");
        navigate("/login")
        
     },
+
     onError:(error)=>{
       toast.error(error.message);
 

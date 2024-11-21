@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter, Routes,Route } from 'react-router-dom'
 import UserContextProvider from './Context/UserContextProvider';
 import Homepage from './Pages/Homepage';
@@ -13,45 +13,77 @@ import About from './Pages/About';
 import { Toaster } from "react-hot-toast";
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from "./Components/LoadingSpinner";
+import Navbar from './Components/Navbar';
+import SearchPage from './Pages/SearchPage';
+import axios from 'axios';
+import UserContext from './Context/UserContext';
+
+
+
 
 
 const App = () => {
 
-   const {data:authUser,isLoading}=useQuery({
-     queryKey:["authUser"],
-     queryFn: async () => {
-       try {
-        const res = await fetch("http://localhost:4000/api/auth/user", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            
-          }
-          
-        })
-        const data = await res.json();
-       if (!res.ok || data.error) {
-        throw new Error(data.error || "Failed to fetch user data");
-      }
-        //console.log("authUser",data);
-        return data;
+  // const isAuthenticated = true; // Replace with your actual logic for checking authentication status.
 
-       } catch (error) {
-        throw error;
-       }
-     },
-     retry:false
-     
-   })
+  // const { data: authUser, isLoading, error } = useQuery({
+  //   queryKey: ["authUser"],
+  //   queryFn: async () => {
+  //     const res = await fetch("http://localhost:4000/api/auth/user", {
+  //       method: "GET",
+  //       credentials: "include",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const data = await res.json();
+  //     if (!res.ok || data.error) {
+  //       throw new Error(data.error || "Failed to fetch user data");
+  //     }
+  //     return data;
+  //   },
+  //   retry: false,
+  //   refetchOnWindowFocus: false,
+  //   refetchOnMount: false,
+  //   enabled: isAuthenticated, // Only run query if user is authenticated
+  // });
   
+  // useEffect(() => {
+  //   if (!isLoading && authUser) {
+  //     console.log("Authenticated user:", authUser);
+  //   } else if (error) {
+  //     console.error("Error fetching auth user:", error.message);
+  //   }
+  // }, [authUser, isLoading, error]);
+
+
+  //  if(isLoading){
+  //    return <div className='flex justify-center items-center h-screen'>
+  //   <LoadingSpinner size='lg' />
+  //     </div>;
+  //  }
+
+
+ 
+    
+
+
+  // const { user } = useContext(UserContext);
+
+  // console.log(user);
+  
+  
+  //  const { user } = useContext(UserContext);
+
    
 
-   if(isLoading){
-     return <div className='flex justify-center items-center h-screen'>
-    <LoadingSpinner size='lg' />
-      </div>;
-   }
+
+
+   
+  
+
+
+
 
 
 
@@ -62,15 +94,18 @@ const App = () => {
    
       <BrowserRouter>
       <UserContextProvider>
+          <Navbar/>  
+
         <Routes>
           <Route path='/' element={<Homepage/>} />
           <Route path='/recipe/:id' element={<RecipesDetails/>} />
-          <Route path='/create' element={authUser ? <Createpage/>: <Login/>} />
+           <Route path='/create' element={ <Createpage/>} /> 
           <Route path='/signup' element={<Singup/>} />
           <Route path='/login' element={<Login/>} />
           <Route path='/about' element={<About/>} />
-          <Route path='/profile' element={authUser ? <Profile/> : <Login/>} />
-          <Route path='/profileEdit' element={authUser ? <Profileedit/>: <Login/>} />
+          <Route path='/profile' element={  <Profile/> } />
+          <Route path='/profile/:id' element={ <Profileedit/>} />
+          <Route path='/search' element={ <SearchPage/> } />
           
           <Route path='*' element={<Notfound/>} />
         </Routes>

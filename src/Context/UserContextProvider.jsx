@@ -10,6 +10,9 @@ const UserContextProvider = ({children })=>{
     const [data,setdata] = useState() //All Recipes Data Files
     const [selectedId, setSelectedId] = useState(null); //single Recipe Id
     const [singleRecipe,setSingleRecipe] = useState() //single Recipe
+    const [searchQuery, setSearchQuery] = useState(""); //search Query
+    const [authUser,setAuthUser] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     
     
@@ -48,6 +51,31 @@ const UserContextProvider = ({children })=>{
       useEffect(() => {
         singleRecipeGet(selectedId);
       }, [selectedId]); // Dependency on 'id' directly from useParams
+      
+
+    //   console.log(data?.recipes);
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get('http://localhost:4000/api/auth/user', { withCredentials: true });
+                setUser(res.data.user);
+            } catch (err) {
+                console.error(err);
+                // alert('Failed to fetch user data');
+            }
+        };
+        fetchUser();
+    }, []);
+ 
+    
+    
+      
+
+    
+  
     
 
       
@@ -56,7 +84,7 @@ const UserContextProvider = ({children })=>{
 
 
     return(
-        <UserContext.Provider value={{data,setdata,setSelectedId,selectedId,singleRecipe}}>
+        <UserContext.Provider value={{data,setdata,setSelectedId,selectedId,singleRecipe,searchQuery,setSearchQuery,user,setUser,searchTerm,setSearchTerm}}>
             {children }
         </UserContext.Provider>
     )

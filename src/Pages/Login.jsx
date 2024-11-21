@@ -23,47 +23,115 @@ const Login = () => {
     
       const navigate = useNavigate();
 
-      
-  const {
-    mutate: loginMutation,
-    isPending,
-    isError,
-    error,
-  } = useMutation({
-    mutationFn: async ({ username, password }) => {
-      try {
-        const res = await fetch("http://localhost:4000/api/auth/login", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            Accpet: "application/json",
-          },
-          body: JSON.stringify({
-            username,
-            password,
-          }),
-        });
-        
-        const data = await res.json();
-        
-        if (!res.ok) throw new Error(data.error || "login failed");
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.error(error);
-        throw new Error(error.message); // Rethrow the error;
+      const [authUser, setAuthUser] = useState(null); // Step 1: Declare the authUser state
+
+      const {
+        mutate: loginMutation,
+        isPending,
+      } = useMutation({
+        mutationFn: async ({ username, password }) => {
+          try {
+            const res = await fetch("http://localhost:4000/api/auth/login", {
+              method: "POST",
+              credentials: "include", // Includes cookies in cross-origin requests
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json", // Fix the typo here: "Accpet" -> "Accept"
+              },
+              body: JSON.stringify({
+                username,
+                password,
+              }),
+            });
+    
+            const data = await res.json();
+    
+            if (!res.ok) throw new Error(data.error || "login failed");
+            console.log(data);
+    
+            // Step 2: Set JWT and role in cookies
+            const expirationDate = new Date();
+            expirationDate.setHours(expirationDate.getHours() + 1); // Set expiration to 1 hour from now
+    
+            // Set JWT and role in cookies
+            document.cookie = `jwt=${data.token}; expires=${expirationDate.toUTCString()}; path=/; Secure; HttpOnly`;
+            document.cookie = `role=${data.role}; expires=${expirationDate.toUTCString()}; path=/; Secure; HttpOnly`;
+    
+            // Optionally: Store the token and role in localStorage (if needed)
+            // localStorage.setItem("token", data.token);
+            // localStorage.setItem("role", data.role);
+    
+            return data;
+          } catch (error) {
+            console.error(error);
+            throw new Error(error.message); // Rethrow the error
+          }
+        },
+        onSuccess: (data) => {
+          toast.success("Login Success!");
+    
+          // Step 3: Set the authUser state with the token and role
+          setAuthUser({ token: data.token, role: data.role }); // Store the token and role in authUser state
+    
+          navigate("/"); // Navigate to the home or dashboard page
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      });
+
+      if(authUser){
+        console.log(authUser);
+      }else{
+        console.log("not logged in");
       }
-    },
-    onSuccess: () => {
-      toast.success("Login Suuccess!");
-      navigate("/")
-      //toast.success("Account created successfully");
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
+        
+
+
+
+  
+
+
+
+      
+  // const {
+  //   mutate: loginMutation,
+  //   isPending,
+  // } = useMutation({
+  //   mutationFn: async ({ username, password }) => {
+  //     try {
+  //       const res = await fetch("http://localhost:4000/api/auth/login", {
+  //         method: "POST",
+  //         credentials: "include",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Accpet: "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           username,
+  //           password,
+  //         }),
+  //       });
+        
+  //       const data = await res.json();
+        
+  //       if (!res.ok) throw new Error(data.error || "login failed");
+  //       console.log(data);
+  //       return data;
+  //     } catch (error) {
+  //       console.error(error);
+  //       throw new Error(error.message); // Rethrow the error;
+  //     }
+  //   },
+  //   onSuccess: () => {
+  //     toast.success("Login Suuccess!");
+  //     navigate("/")
+  //     //toast.success("Account created successfully");
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message);
+  //   },
+  // });
 
 
 
@@ -77,31 +145,6 @@ const Login = () => {
   }
 
 
-
-
-
-
-
-
-
-
-      // const handleSubmit =  async (e) => {
-      //   e.preventDefault();
-      //   try {
-      //     const response = await axios.post("http://localhost:4000/api/auth/login", formData, {
-      //       withCredentials: true, // Send cookies with the request
-      //   });
-      //   console.log(response.data);
-      //   console.log(response);
-      //       navigate("/")
-           
-    
-      //   } catch (error) {
-      //       console.log(error);
-      //       setError("Invalid username or password.");
-            
-      //   }
-      // };
     
       const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

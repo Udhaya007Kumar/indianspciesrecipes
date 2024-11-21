@@ -4,7 +4,7 @@ import Navbar from '../Components/Navbar';
 const About = () => {
     return (
         <div>
-            <Navbar/>
+            {/* <Navbar/> */}
             <div className="container mx-auto p-6 bg-gray-50 text-gray-800 mt-8">
             <h1 className="text-4xl font-bold ">About Us</h1> 
             <h5 className='text-2xl mt-8 ml-12'> Welcome to <span className='text-orange-500'>IndianSpicesRecipes</span>, your ultimate cooking companion!</h5>
