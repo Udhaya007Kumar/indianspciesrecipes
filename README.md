@@ -32,10 +32,10 @@
    #  It is built using React.js to display a dynamic and user-friendly interface for browsing recipes.
 
 # Recipe Details Page
-   # Each recipe has a detailed page showing ingredients, preparation steps, and cooking tips.
-   # Spices used in the recipe are highlighted and explained to educate users on their importance in Indian cooking.
-   # Images of the dishes are displayed to give a visual appeal.
-# User 
+   Each recipe has a detailed page showing ingredients, preparation steps, and cooking tips.
+   Spices used in the recipe are highlighted and explained to educate users on their importance in Indian cooking.
+   Images of the dishes are displayed to give a visual appeal.
+
 
 
 ----------------------------------------------------------------EnD.........................................................................................
