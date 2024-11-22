@@ -4,7 +4,6 @@ import UserContextProvider from './Context/UserContextProvider';
 import Homepage from './Pages/Homepage';
 import Singup from './Pages/Singup';
 import Login from './Pages/Login';
-import Notfound from './Pages/Notfound';
 import RecipesDetails from './Pages/RecipesDetails';
 import Createpage from './Pages/Createpage';
 import Profile from './Pages/Profile';
@@ -16,6 +15,7 @@ import LoadingSpinner from "./Components/LoadingSpinner";
 import Navbar from './Components/Navbar';
 import SearchPage from './Pages/SearchPage';
 import UserRecipesList from './Pages/UserRecipesList';
+import NotfoundPage from './Pages/NotfoundPage';
 
 
 
@@ -106,11 +106,9 @@ const App = () => {
           <Route path='/profile' element={  <Profile/> } />
           <Route path='/profile/:id' element={ <Profileedit/>} />
           <Route path='/search' element={ <SearchPage/> } />
-          <Route path='*' element={<Notfound/>} />
           <Route path='/userrecipes/:id' element={<UserRecipesList/>} />
-          
-          
-          <Route path='*' element={<Notfound/>} />
+
+          <Route path='*' element={<NotfoundPage/>} />
         </Routes>
         <Toaster />
       </UserContextProvider>

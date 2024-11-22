@@ -1,14 +1,11 @@
 import React from 'react';
- import Notfoundimg from '../assets/Notfound.jpg'
 
-import { Link } from 'react-router-dom';
-const Notfound = () => {
-
-
+const NotfoundPage = () => {
     return (
+
         <div>
            <div className=' container mx-auto flex mt-12 justify-center'>
-           <img  src={Notfoundimg} alt="" />
+           <h1 className='text-4xl font-bold'>404 Not Found</h1>
            
            </div>
            <div className='mt-5 container mx-auto flex justify-center mb-5'>
@@ -18,7 +15,8 @@ const Notfound = () => {
           
            
         </div>
+        
     );
 };
 
-export default Notfound;
+export default NotfoundPage;
