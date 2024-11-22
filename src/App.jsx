@@ -15,8 +15,8 @@ import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from "./Components/LoadingSpinner";
 import Navbar from './Components/Navbar';
 import SearchPage from './Pages/SearchPage';
-import axios from 'axios';
-import UserContext from './Context/UserContext';
+import UserRecipesList from './Pages/UserRecipesList';
+
 
 
 
@@ -106,6 +106,9 @@ const App = () => {
           <Route path='/profile' element={  <Profile/> } />
           <Route path='/profile/:id' element={ <Profileedit/>} />
           <Route path='/search' element={ <SearchPage/> } />
+          <Route path='*' element={<Notfound/>} />
+          <Route path='/userrecipes/:id' element={<UserRecipesList/>} />
+          
           
           <Route path='*' element={<Notfound/>} />
         </Routes>

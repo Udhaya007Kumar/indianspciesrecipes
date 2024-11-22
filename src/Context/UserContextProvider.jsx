@@ -11,11 +11,13 @@ const UserContextProvider = ({children })=>{
     const [selectedId, setSelectedId] = useState(null); //single Recipe Id
     const [singleRecipe,setSingleRecipe] = useState() //single Recipe
     const [searchQuery, setSearchQuery] = useState(""); //search Query
-    const [authUser,setAuthUser] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [userList, setUserList] = useState();
+    
 
     
     
+
 
   
    
@@ -24,7 +26,7 @@ const UserContextProvider = ({children })=>{
 
     const allRecipesGet = async () => {
         try {
-            const res = await axios.get("http://localhost:4000/api/recipe/all");
+            const res = await axios.get("https://indianspciesrecipesbg.onrender.com/api/recipe/all");
             setdata(res.data);
            // Log the data after setting it
             
@@ -39,7 +41,7 @@ const UserContextProvider = ({children })=>{
 
     const singleRecipeGet = async (id) => {
         try {
-          const res = await axios.get(`http://localhost:4000/api/recipe/singlerecipe/${id}`);
+          const res = await axios.get(`https://indianspciesrecipesbg.onrender.com/api/recipe/singlerecipe/${id}`);
           setSingleRecipe(res.data);
           
         } catch (error) {
@@ -60,7 +62,7 @@ const UserContextProvider = ({children })=>{
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get('http://localhost:4000/api/auth/user', { withCredentials: true });
+                const res = await axios.get('https://indianspciesrecipesbg.onrender.com/api/auth/user', { withCredentials: true });
                 setUser(res.data.user);
             } catch (err) {
                 console.error(err);
@@ -69,22 +71,12 @@ const UserContextProvider = ({children })=>{
         };
         fetchUser();
     }, []);
- 
-    
-    
-      
-
-    
-  
-    
-
-      
 
 
 
 
     return(
-        <UserContext.Provider value={{data,setdata,setSelectedId,selectedId,singleRecipe,searchQuery,setSearchQuery,user,setUser,searchTerm,setSearchTerm}}>
+        <UserContext.Provider value={{data,setdata,setSelectedId,selectedId,singleRecipe,searchQuery,setSearchQuery,user,setUser,searchTerm,setSearchTerm,userList,setUserList }}>
             {children }
         </UserContext.Provider>
     )

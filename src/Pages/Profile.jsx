@@ -9,12 +9,13 @@ import axios from 'axios';
 const Profile = () => {
   const [uploading, setUploading] = useState(false);
 
-  const { user } = useContext(UserContext); // Corrected from 'authUser' to 'user'
+  const { user,userList,setUserList } = useContext(UserContext); // Corrected from 'authUser' to 'user'
 
   const [coverimg, setCoverImg] = useState(null);
   const [profileimg, setProfileImg] = useState(null);
   const coverFileInputRef = useRef(null);
   const profileFileInputRef = useRef(null);
+   // Initialize as an empty array
 
   // Handle Cover Image Upload
   const handleCoverFileChange = async (e) => {
@@ -72,7 +73,7 @@ const Profile = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/user/updatecoverimage", {
+      const res = await fetch("https://indianspciesrecipesbg.onrender.com/api/user/updatecoverimage", {
         method: "POST",
         credentials: "include", // Ensure cookies are sent for session-based authentication
         headers: {
@@ -105,7 +106,7 @@ const Profile = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/user/updateprofileimage", {
+      const res = await fetch("https://indianspciesrecipesbg.onrender.com/api/user/updateprofileimage", {
         method: "POST",
         credentials: "include", // Ensure cookies are sent for session-based authentication
         headers: {
@@ -129,6 +130,40 @@ const Profile = () => {
       toast.error(error.message || "Error updating profile image.");
     }
   };
+
+  const handUserGetlist = async () => {
+    try {
+      const res = await fetch(`https://indianspciesrecipesbg.onrender.com/api/user/userrecipe/${user?._id}`, {
+        method: "POST", // Change to GET if no payload is sent
+        credentials: "include", // Ensure cookies are sent for session-based authentication
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch user recipe list.");
+      }
+  
+      // Update the state with the fetched data
+      setUserList(data);
+      toast.success("User recipe list fetched successfully!");
+      console.log("Server response:", data);
+    } catch (error) {
+      console.error("Error fetching user profile list:", error.message);
+      toast.error(error.message || "Error fetching user profile.");
+    }
+  };
+  
+
+  
+
+
+
+
+
 
   return (
     <div className="container mx-auto mt-5">
@@ -165,7 +200,7 @@ const Profile = () => {
         />
         
         <button
-          className="mt-2 p-2 bg-blue-500 text-white rounded"
+          className="mt-2 p-2 bg-orange-500 text-white rounded"
           onClick={handleCoverSaveClick}
         >
           Save Cover Image
@@ -218,6 +253,16 @@ const Profile = () => {
         <span className="text-sm text-blue-600 my-1">{user?.link || 'https://github.com/johndoe'}</span>
         <span className="text-sm text-gray-600 my-1">{user?.email || 'email@example.com'}</span>
       </div>
+
+
+      <div className='container mx-auto mt-8'>
+        <Link to={`/userrecipes/${user?._id}`}>
+        <button className='mt-2 p-2 bg-orange-500 text-white rounded '
+        onClick={handUserGetlist}>UserPost...</button>
+        </Link>  
+      </div>
+
+
     </div>
   );
 };

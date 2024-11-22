@@ -33,7 +33,7 @@ const RecipesDetails = () => {
     const handleLikeUnlike = async () => {
       try {
         const { data } = await axios.post(
-          `http://localhost:4000/api/recipe/like/${selectedId}`,
+          `https://indianspciesrecipesbg.onrender.com/api/recipe/like/${selectedId}`,
           {}, // No data payload for this request
           {
             withCredentials: true, // Ensures cookies are included
@@ -62,7 +62,7 @@ const RecipesDetails = () => {
 
       try {
           const response = await axios.post(
-              `http://localhost:4000/api/recipe/comment/${selectedId}`,
+              `https://indianspciesrecipesbg.onrender.com/api/recipe/comment/${selectedId}`,
             { text: commentText },  // Your data payload
             {
                 withCredentials: true,  // Include cookies with the request
@@ -88,8 +88,7 @@ const RecipesDetails = () => {
     e.preventDefault(); // Prevent the default form submit action
   
     try {
-      const response = await axios.post(
-        `http://localhost:4000/api/recipe/rating/${selectedId}`,
+      const response = await axios.post(' https://indianspciesrecipesbg.onrender.com/api/recipe/rating',`/${selectedId}`,
         { rating }, // Your data payload
         {
           withCredentials: true,  // Include cookies with the request

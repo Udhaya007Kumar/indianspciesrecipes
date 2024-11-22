@@ -31,7 +31,7 @@ const Login = () => {
       } = useMutation({
         mutationFn: async ({ username, password }) => {
           try {
-            const res = await fetch("http://localhost:4000/api/auth/login", {
+            const res = await fetch("https://indianspciesrecipesbg.onrender.com/api/auth/login", {
               method: "POST",
               credentials: "include", // Includes cookies in cross-origin requests
               headers: {

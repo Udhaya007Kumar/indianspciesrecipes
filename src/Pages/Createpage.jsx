@@ -44,7 +44,7 @@ const Createpage = () => {
     mutationFn: async ({ form,image }) => {
 
       try {
-        const res = await fetch("http://localhost:4000/api/recipe/add", {
+        const res = await fetch("https://indianspciesrecipesbg.onrender.com/api/recipe/add", {
           method: "POST",
           credentials: "include",
           headers: {

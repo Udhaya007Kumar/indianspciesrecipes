@@ -42,7 +42,7 @@ const ProfileEdit = () => {
   const { mutate: updateProfile } = useMutation({
     mutationFn: async (data) => {
       const id = user._id; // Assuming user object contains _id
-      const res = await fetch(`http://localhost:4000/api/user/update/${id}`, {
+      const res = await fetch(`https://indianspciesrecipesbg.onrender.com/api/user/update/${id}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

@@ -48,7 +48,7 @@ const Navbar = () => {
   const { mutate:logout } = useMutation({
     mutationFn: async () => {
       try {
-        const res= await fetch("http://localhost:4000/api/auth/logout", {
+        const res= await fetch("https://indianspciesrecipesbg.onrender.com/api/auth/logout", {
           method: "POST",
           credentials: "include",
           headers: {
@@ -89,7 +89,7 @@ const Navbar = () => {
    
     
 
-    console.log(user);
+    
     
 
     return (

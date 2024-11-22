@@ -23,7 +23,7 @@ const Singup = () => {
   const {mutate,isPending,isError,error} = useMutation({
     mutationFn: async ({username,fullname,email,password}) => {
       try {
-        const res =await fetch("http://localhost:4000/api/auth/signup",{
+        const res =await fetch("https://indianspciesrecipesbg.onrender.com/api/auth/signup",{
           method:"POST",
           credentials:"include",
           headers:{
