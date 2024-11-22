@@ -110,7 +110,7 @@ const App = () => {
           <Route path='/userrecipes/:id' element={<UserRecipesList/>} />
           
           
-          <Route path='*' element={<Notfound/>} />
+         
         </Routes>
         <Toaster />
       </UserContextProvider>
