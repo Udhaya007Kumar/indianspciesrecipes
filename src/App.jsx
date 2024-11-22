@@ -107,8 +107,9 @@ const App = () => {
           <Route path='/profile/:id' element={ <Profileedit/>} />
           <Route path='/search' element={ <SearchPage/> } />
           <Route path='/userrecipes/:id' element={<UserRecipesList/>} />
-
-          <Route path='*' element={<NotfoundPage/>} />
+          
+          
+          <Route path='*' element={<Notfound/>} />
         </Routes>
         <Toaster />
       </UserContextProvider>
